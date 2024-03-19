@@ -1,0 +1,39 @@
+.booksPage {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    height: 92vh;
+    justify-content: space-between;
+}
+
+.addBtn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.booksContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: 90vh;
+    overflow: auto;
+    padding: 10px;
+  }
+
+  .bookCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bookTitle {
+    display: flex;
+    justify-content: space-between;
+    color: #FFB59E;
+    font-weight: 800;
+  }
+
+  .bookDesc{
+    color:#333333;
+  }
+  
+  
