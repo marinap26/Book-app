@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+import { User } from "../contexts/AuthContext";
 import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 interface AuthService {
   login: (username: string, password: string) => Promise<void>;
@@ -9,6 +12,20 @@ interface AuthService {
 
 const useAuthService = (): AuthService => {
   const { authenticateUser, unAuthenticateUser } = useAuth();
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("userToken");
+  const user = localStorage.getItem("user");
+
+  useEffect(() => {
+    if (token && user) {
+      authenticateUser(JSON.parse(localStorage.getItem("user") as string));
+      navigate("/books");
+    }
+    //  else {
+    //   navigate("/login");
+    // }
+  }, []);
 
   const login = async (username: string, password: string): Promise<void> => {
     const url = "http://localhost:5000/login";
@@ -51,14 +68,17 @@ const useAuthService = (): AuthService => {
         throw new Error(errorMessage);
       }
       unAuthenticateUser();
-      delete localStorage.userToken;
+      localStorage.removeItem("userToken");
     } catch (error) {
       console.error("Logout failed:", error);
       throw error;
     }
   };
 
-  const register = async ( username: string, password: string): Promise<void> => {
+  const register = async (
+    username: string,
+    password: string
+  ): Promise<void> => {
     const url = "http://localhost:5000/register";
     const data = { username, password };
     try {

@@ -6,9 +6,7 @@ import Book from "../../components/Book";
 import DeleteBookModal from "../../modules/DeleteBookModal";
 import EditBookModal from "../../modules/EditBookModal";
 import NoBooks from "../../components/NoBooks";
-import {
-  PlusOutlined
-} from '@ant-design/icons';
+import { PlusOutlined } from "@ant-design/icons";
 import defaultBookCover from "../../images/gulfer-ergin-LUGuCtvlk1Q-unsplash.jpg";
 import styles from "./Books.module.css";
 import useAuth from "../../hooks/useAuth";
@@ -124,7 +122,19 @@ const BooksPage = () => {
         });
       }
       setOpenEditBookModal(false);
-      getBooks();
+      // getBooks();
+      const updatedBooks = books.map((book) =>
+        book.id === bookToEdit?.id
+          ? {
+              ...book,
+              title: values.title,
+              desc: values.desc,
+              price: values.price,
+              cover: defaultBookCover,
+            }
+          : book
+      );
+      setBooks(updatedBooks);
     } catch (error) {
       console.error("Error fetching books:", error);
       throw error;
@@ -149,7 +159,8 @@ const BooksPage = () => {
         body: JSON.stringify(body),
       });
       setOpenDeleteBookModal(false);
-      getBooks();
+      const updatedBooks = books.filter((book) => book.id !== bookToDeleteId);
+      setBooks(updatedBooks);
     } catch (error) {
       console.error("Error fetching books:", error);
       throw error;
@@ -161,7 +172,17 @@ const BooksPage = () => {
       {books.length > 0 ? (
         <div className={styles.booksPage}>
           <div className={styles.addBtn}>
-            <Button style={{backgroundColor:"#001529", color:"#F2EFEA", display:"flex", justifyContent:"center", alignItems:"center"}} onClick={() => setOpenAddBookModal(true)} icon={<PlusOutlined />}/>
+            <Button
+              style={{
+                backgroundColor: "#001529",
+                color: "#F2EFEA",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onClick={() => setOpenAddBookModal(true)}
+              icon={<PlusOutlined />}
+            />
           </div>
           <div className={styles.booksContainer}>
             {books.map((book) => {

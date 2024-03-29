@@ -1,4 +1,10 @@
-import React, { ReactNode, createContext, useMemo, useState } from "react";
+import React, {
+  ReactNode,
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -30,10 +36,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const authenticateUser = (user: User) => {
     setUser(user);
+    localStorage.setItem("user", JSON.stringify(user));
   };
 
   const unAuthenticateUser = () => {
     setUser(null);
+    localStorage.removeItem("user");
   };
 
   return (
